@@ -1,0 +1,114 @@
+{
+  "name": "claude-code-html-export",
+  "displayName": "Claude Code HTML Export",
+  "description": "Export Claude Code chat sessions to self-contained HTML files from a session history view.",
+  "version": "0.1.0",
+  "publisher": "jtdigital",
+  "author": {
+    "name": "Justin Truax",
+    "email": "justin@jtdigital.ca"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JTruax/claude-code-html-export.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JTruax/claude-code-html-export/issues"
+  },
+  "homepage": "https://github.com/JTruax/claude-code-html-export#readme",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "AI",
+    "Chat",
+    "Other"
+  ],
+  "keywords": [
+    "claude",
+    "claude code",
+    "export",
+    "html",
+    "chat history",
+    "transcript"
+  ],
+  "icon": "resources/icon.png",
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "views": {
+      "claude-sidebar": [
+        {
+          "id": "claudeHtmlExport.sessions",
+          "name": "Session History",
+          "when": "claude-code:doesNotSupportSecondarySidebar",
+          "icon": "$(history)"
+        }
+      ],
+      "claude-sidebar-secondary": [
+        {
+          "id": "claudeHtmlExport.sessionsSecondary",
+          "name": "Session History",
+          "when": "!claude-code:doesNotSupportSecondarySidebar",
+          "icon": "$(history)"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claudeHtmlExport.export",
+        "title": "Export Session to HTML",
+        "category": "Claude History",
+        "icon": "$(desktop-download)"
+      },
+      {
+        "command": "claudeHtmlExport.refresh",
+        "title": "Refresh Sessions",
+        "category": "Claude History",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claudeHtmlExport.exportPicker",
+        "title": "Export Session to HTML…",
+        "category": "Claude History"
+      }
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "claudeHtmlExport.export",
+          "when": "view =~ /^claudeHtmlExport\\.sessions/ && viewItem == session",
+          "group": "inline"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "claudeHtmlExport.refresh",
+          "when": "view =~ /^claudeHtmlExport\\.sessions/",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "claudeHtmlExport.export",
+          "when": "false"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "compile": "npm run check-types && node esbuild.js",
+    "check-types": "tsc --noEmit",
+    "watch": "node esbuild.js --watch",
+    "package": "npm run check-types && node esbuild.js --production && vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.0",
+    "marked": "^14.1.4",
+    "typescript": "^5.6.3"
+  }
+}
