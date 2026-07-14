@@ -60,7 +60,10 @@
         "command": "claudeHtmlExport.export",
         "title": "Export Session to HTML",
         "category": "Claude History",
-        "icon": "$(desktop-download)"
+        "icon": {
+          "light": "resources/light/download.svg",
+          "dark": "resources/dark/download.svg"
+        }
       },
       {
         "command": "claudeHtmlExport.refresh",
