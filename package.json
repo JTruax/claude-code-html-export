@@ -3,7 +3,7 @@
   "displayName": "Claude Code HTML Export",
   "description": "Export Claude Code chat sessions to self-contained HTML files from a session history view.",
   "version": "0.1.0",
-  "publisher": "jtdigital",
+  "publisher": "JTruax",
   "author": {
     "name": "JTruax",
     "email": "justin@jtdigital.ca"
