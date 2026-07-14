@@ -120,6 +120,25 @@ function promptLabel(s: string): string {
   return firstLine.length > 60 ? firstLine.slice(0, 57) + '…' : firstLine;
 }
 
+/**
+ * Label for a user message, whose content is either a bare string or a block
+ * array. Slash-command invocations make poor titles, so they yield nothing.
+ */
+function userPromptLabel(content: unknown): string | undefined {
+  let text: string | undefined;
+  if (typeof content === 'string') {
+    text = content;
+  } else if (Array.isArray(content)) {
+    const block = content.find(
+      (b: ContentBlock) => b.type === 'text' && typeof b.text === 'string'
+    );
+    text = block?.text;
+  }
+  if (!text || isCommandText(text)) return undefined;
+  const label = promptLabel(text);
+  return label || undefined;
+}
+
 async function scanFile(
   filePath: string,
   onEntry: (obj: Record<string, any>) => void
@@ -165,17 +184,7 @@ export async function getSessionMeta(filePath: string): Promise<SessionMeta> {
     cwd = cwd ?? obj.cwd;
     messageCount++;
     if (!firstPrompt && obj.type === 'user') {
-      const content = obj.message?.content;
-      let text: string | undefined;
-      if (typeof content === 'string') {
-        text = content;
-      } else if (Array.isArray(content)) {
-        const block = content.find(
-          (b: ContentBlock) => b.type === 'text' && typeof b.text === 'string'
-        );
-        text = block?.text;
-      }
-      if (text && !isCommandText(text)) firstPrompt = promptLabel(text);
+      firstPrompt = userPromptLabel(obj.message?.content);
     }
   });
 
@@ -226,8 +235,8 @@ export async function loadSession(filePath: string): Promise<SessionData> {
     cwd = cwd ?? obj.cwd;
     gitBranch = gitBranch ?? obj.gitBranch;
     if (obj.type === 'assistant' && obj.message?.model) model = obj.message.model;
-    if (!firstPrompt && obj.type === 'user' && typeof content === 'string' && !isCommandText(content)) {
-      firstPrompt = promptLabel(content);
+    if (!firstPrompt && obj.type === 'user') {
+      firstPrompt = userPromptLabel(content);
     }
     entries.push({
       type: obj.type,
