@@ -4,10 +4,10 @@ A lightweight companion extension for the [Claude Code](https://marketplace.visu
 
 ## Install
 
-Download `claude-code-html-export-0.1.0.vsix` from the [latest release](https://github.com/JTruax/claude-code-html-export/releases/latest), then:
+Download the `.vsix` file from the [latest release](https://github.com/JTruax/claude-code-html-export/releases/latest), then:
 
 ```sh
-code --install-extension claude-code-html-export-0.1.0.vsix
+code --install-extension ~/Downloads/claude-code-html-export-*.vsix
 ```
 
 Reload the window and the **Session History** section appears in the Claude Code sidebar. (To build it yourself instead, see [Development](#development).)
